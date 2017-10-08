@@ -1,0 +1,19 @@
+
+The variants are as follows:
+  'third' - all third-order effects
+  'fixsex' - sex effects are constant over time
+  'fixagesex' - age and sex effects are constant over time
+  'inform' - the same as 'third', but with more informative priors
+     on variances for trend terms
+
+To obtain results for one variant, one subset of data (ie data up to 'yr_est'), and one pediction
+interval ('len_pred'), proceed as follows.
+
+1. Run 'calculate_rates' from the shell, with something like
+   Rscript calculate_rates.R --variant fixsex --yr_est 1985 --len_pred 25 --n_burnin 100000 --n_sim 100000
+
+2. Run 'calculate_life_exp' from the shell, with something like
+   Rscript calculate_life_exp.R --variant fixsex --yr_est 1985 --len_pred 25
+
+
+3. 

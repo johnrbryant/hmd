@@ -1,0 +1,133 @@
+
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc} 
+\usepackage{natbib}
+\usepackage{url}
+
+\title{Supplementary Materials}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+\maketitle
+
+\section{Sample}
+
+\begin{table}[ht]
+\centering
+\caption{Description of sample} 
+\label{tab:sample_description}
+\begingroup\small
+\begin{tabular}{llrrll}
+  \hline
+Series & Code & First & Last & Included & Label \\ 
+  \hline
+Belgium & BEL & 1841 & 2015 & Yes & Belgium \\ 
+  East Germany & DEUTE & 1956 & 2015 & No & - \\ 
+  Germany Total Population & DEUTNP & 1990 & 2015 & No & - \\ 
+  West Germany & DEUTW & 1956 & 2015 & Yes & West Germany \\ 
+  Finland & FIN & 1878 & 2015 & Yes & Finland \\ 
+  France Civilian Population & FRACNP & 1816 & 2015 & No & - \\ 
+  France Total Population & FRATNP & 1816 & 2015 & Yes & France \\ 
+  Croatia & HRV & 2002 & 2015 & No & - \\ 
+  Portugal & PRT & 1940 & 2015 & Yes & Portugal \\ 
+  USA & USA & 1933 & 2015 & Yes & USA \\ 
+  Australia & AUS & 1921 & 2014 & Yes & Australia \\ 
+  Austria & AUT & 1947 & 2014 & Yes & Austria \\ 
+  Belarus & BLR & 1959 & 2014 & No & - \\ 
+  Switzerland & CHE & 1876 & 2014 & Yes & Switzerland \\ 
+  Czech Republic & CZE & 1950 & 2014 & No & - \\ 
+  Denmark & DNK & 1835 & 2014 & Yes & Denmark \\ 
+  Spain & ESP & 1908 & 2014 & Yes & Spain \\ 
+  Hungary & HUN & 1950 & 2014 & No & - \\ 
+  Ireland & IRL & 1950 & 2014 & Yes & Ireland \\ 
+  Israel & ISR & 1983 & 2014 & No & - \\ 
+  Japan & JPN & 1947 & 2014 & Yes & Japan \\ 
+  Luxembourg & LUX & 1960 & 2014 & Yes & Luxembourg \\ 
+  Netherlands & NLD & 1850 & 2014 & Yes & Netherlands \\ 
+  Norway & NOR & 1846 & 2014 & Yes & Norway \\ 
+  Poland & POL & 1958 & 2014 & No & - \\ 
+  Russia & RUS & 1959 & 2014 & No & - \\ 
+  Slovakia & SVK & 1950 & 2014 & No & - \\ 
+  Slovenia & SVN & 1983 & 2014 & No & - \\ 
+  Sweden & SWE & 1751 & 2014 & Yes & Sweden \\ 
+  Taiwan & TWN & 1970 & 2014 & No & - \\ 
+  Estonia & EST & 1959 & 2013 & No & - \\ 
+  England and Wales Civilian Population & GBRCENW & 1841 & 2013 & No & - \\ 
+  England and Wales Total Population & GBRTENW & 1841 & 2013 & Yes & England and Wales \\ 
+  Northern Ireland & GBR\_NIR & 1922 & 2013 & Yes & Northern Ireland \\ 
+  United Kingdom Total Population & GBR\_NP & 1922 & 2013 & No & - \\ 
+  Scotland & GBR\_SCO & 1855 & 2013 & Yes & Scotland \\ 
+  Greece & GRC & 1981 & 2013 & No & - \\ 
+  Iceland & ISL & 1838 & 2013 & Yes & Iceland \\ 
+  Lithuania & LTU & 1959 & 2013 & No & - \\ 
+  Latvia & LVA & 1959 & 2013 & No & - \\ 
+  New Zealand Total Population & NZL\_NP & 1948 & 2013 & Yes & New Zealand \\ 
+  Ukraine & UKR & 1959 & 2013 & No & - \\ 
+  Italy & ITA & 1872 & 2012 & Yes & Italy \\ 
+  Canada & CAN & 1921 & 2011 & Yes & Canada \\ 
+  Bulgaria & BGR & 1947 & 2010 & No & - \\ 
+  New Zealand Maori & NZL\_MA & 1948 & 2008 & No & - \\ 
+  New Zealand Non-Maori & NZL\_NM & 1901 & 2008 & No & - \\ 
+  Chile & CHL & 1992 & 2005 & No & - \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
+
+
+
+\end{document}

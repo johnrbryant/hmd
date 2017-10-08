@@ -1,0 +1,15 @@
+
+- The question "is life expectancy declining?" is not a good hook for the paper, because, even with the variation, it is clear that life expectancy has not been declining in many countries
+- We need to be careful when pooling countries. It is not obvious, for instance, that Russia and the US are exchangeable - that Russian experience can be used to help predict US experience
+- To people unfamiliar with life expectancy data, it is surprising how much annual fluctuation there is in the rate of change of life expectancy. In small countries, much of this is due to sampling variability. But not in big countries like the US or Germany. We need to look for existing explanations for the variability. Diseases? Weather?
+- In the US, mortality has been *increasing* at middle ages and decreasing at older ages. What about other countries? Can have mortality increases at some ages, even in countries where overall life expectancy has been increasing
+- Even though the HMD is one of the biggest datasets available on human experience, the `sample size' depends on the units.  If unit is country, only 30. If unit is time for a particular country, only 50 or so. Need to increase sample size by pooling across countries/times. But without making excessively strong assumptions about similarity. The ability to deal with similar but not identical units is a strength of Bayesian methods.
+- Sampling variability can make it difficult to identify trends in overall life expectancy for small to medium size countries. With age-sex specific rates, sampling variability can be large even in big countries.
+- To do forecasting, we have to use a model. Can't just stick to finite population quantities.
+- We can choose models based on tests with held-back data
+- We are interested in studying trends in overall mortality levels, but also in age-sex-specific patterns, for a wide range of countries
+- Accuracy of forecasts depends on identifying and modelling main features of historical patterns
+- Bayesian methods allow us to simultaneously model age pattern, overall level, sex differentials, etc. Also allow us to model multiple types of uncertainty.
+- We are interesting in country-specific mortality patterns ("fingerprints") and how these are changing over time
+- Multiple time series is still an open problem. We have huge number of time series.
+- To what extent are patterns shared across countries, and to what extent are they idiosyncratic to one country/region?

@@ -1,0 +1,49 @@
+code,series,include,label
+AUS,Australia,TRUE,Australia
+AUT,Austria,TRUE,Austria
+BEL,Belgium,TRUE,Belgium
+BGR,Bulgaria,FALSE,NA
+BLR,Belarus,FALSE,NA
+CAN,Canada,TRUE,Canada
+CHE,Switzerland,TRUE,Switzerland
+CHL,Chile,FALSE,NA
+CZE,Czech Republic,FALSE,NA
+DEUTE,East Germany,FALSE,NA
+DEUTNP,Germany Total Population,FALSE,NA
+DEUTW,West Germany,TRUE,West Germany
+DNK,Denmark,TRUE,Denmark
+ESP,Spain,TRUE,Spain
+EST,Estonia,FALSE,NA
+FIN,Finland,TRUE,Finland
+FRACNP,France Civilian Population,FALSE,NA
+FRATNP,France Total Population,TRUE,France
+GBRCENW,England and Wales Civilian Population,FALSE,NA
+GBRTENW,England and Wales Total Population,TRUE,England and Wales
+GBR_NIR,Northern Ireland,TRUE,Northern Ireland
+GBR_NP,United Kingdom Total Population,FALSE,NA
+GBR_SCO,Scotland,TRUE,Scotland
+GRC,Greece,FALSE,NA
+HRV,Croatia,FALSE,NA
+HUN,Hungary,FALSE,NA
+IRL,Ireland,TRUE,Ireland
+ISL,Iceland,TRUE,Iceland
+ISR,Israel,FALSE,NA
+ITA,Italy,TRUE,Italy
+JPN,Japan,TRUE,Japan
+LTU,Lithuania,FALSE,NA
+LUX,Luxembourg,TRUE,Luxembourg
+LVA,Latvia,FALSE,NA
+NLD,Netherlands,TRUE,Netherlands
+NOR,Norway,TRUE,Norway
+NZL_MA,New Zealand Maori,FALSE,NA
+NZL_NM,New Zealand Non-Maori,FALSE,NA
+NZL_NP,New Zealand Total Population,TRUE,New Zealand
+POL,Poland,FALSE,NA
+PRT,Portugal,TRUE,Portugal
+RUS,Russia,FALSE,NA
+SVK,Slovakia,FALSE,NA
+SVN,Slovenia,FALSE,NA
+SWE,Sweden,TRUE,Sweden
+TWN,Taiwan,FALSE,NA
+UKR,Ukraine,FALSE,NA
+USA,USA,TRUE,USA

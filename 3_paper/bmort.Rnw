@@ -1,0 +1,131 @@
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{url}
+
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\let\proglang=\textit
+\let\code=\texttt
+
+\title{Some Amazing Facts About $\delta_t$}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+<<setup, echo = FALSE, message = FALSE>>=
+library(demest)
+deaths <- readRDS("out/deaths.rds")
+exposure <- readRDS("out/exposure.rds")
+@
+
+
+% For Nature, the abstract is really an introductory paragraph set
+% in bold type.  This paragraph must be ``fully referenced'' and
+% less than 180 words for Letters.  This is the thing that is
+% supposed to be aimed at people from other disciplines and is
+% arguably the most important part to getting your paper past the
+% editors.  End this paragraph with a sentence like ``Here we
+% show...'' or something similar.
+
+% Then the body of the main text appears after the intro paragraph.
+% Figure environments can be left in place in the document.
+% \verb|\includegraphics| commands are ignored since Nature wants
+% the figures sent as separate files and the captions are
+% automatically moved to the end of the document (they are printed
+% out with the \verb|\end{document}| command. However, tables must
+% be manually moved to the end of the document, after the addendum.
+
+% Each figure legend should begin with a brief title for
+% the whole figure and continue with a short description of each
+% panel and the symbols used. For contributions with methods
+% sections, legends should not contain any details of methods, or
+% exceed 100 words (fewer than 500 words in total for the whole
+% paper). In contributions without methods sections, legends should
+% be fewer than 300 words (800 words or fewer in total for the whole
+% paper).
+
+Importance of understanding mortality change
+\begin{itemize}
+  \item Basic indicator of social wellbeing; success of health sector etc
+  \item Forecasting - pensions, life insurance, population forecasts, aged care, health care
+\end{itemize}
+
+Expectations about mortality decline
+\begin{itemize}
+    \item Lee and Carter, Oeppen and Vaupel etc, pointing out that tapering off in mortality decline not appearing. Governments, demographers systematically understating future declines. 
+    \item Has become the new orthodoxy.
+    \item Actuaries pointing out that decline slowing - or reversed
+    \item Case and Deaton in US
+ \end{itemize}
+
+
+\begin{figure}
+\begin{subfigure}{\textwidth}
+  \centering
+\quad \includegraphics{out/fig_life_exp_sample}
+  \caption{Life expectancy at birth.}
+\end{subfigure}
+\begin{subfigure}{\textwidth}
+  \centering
+\includegraphics{out/fig_mort_age_sample}
+  \caption{Mortality rates.  The rates shown in red are for age 0.  The rates shown in blue are, from bottom to top, for ages 15--19, 30--34, 45--49, 60--64, 75--79, and 100+.}
+\end{subfigure}
+\caption{Life expectancies and age-specific mortality rates, for males, for 5 selected countries.  The life expectancies come from the Human Mortality Database (HMD) \citep{hmd}. The mortality rates were calculated by us from deaths and exposure data from the HMD.  Life expectancies and mortality rates for females and males for our full sample of 22 countries are shown in Figure XXX of the Extended Data.}
+  \label{fig:sample_life_mort}
+\end{figure}
+
+Mortality varies:
+\begin{itemize}
+  \item Best practice life expectancy follows straight line
+  \item Individual country life expectancy not straight lines - slow and fast periods
+  \item individual mortality rates even more erratic
+ \end{itemize}
+ 
+ Hierarchical models
+ \begin{itemize}
+   \item despite very large dataset (\Sexpr{sprintf('%3.2f', sum(deaths, na.rm = TRUE) * 1e-9)} billion deaths and \Sexpr{sprintf('%3.0f', sum(exposure, na.rm = TRUE) * 1e-9)} billion person-years of observation) have `small sample' problem (paradox of big data)
+   \item variability at different levels
+   \item for any given country, limited number of years
+   \item pool across countries
+   \item similar but not identical--hierarchical models
+   \item hierarchical models allow us to separate out and model different sources of variability
+   \item sample of countries chosen to be approximately exchangeable - makes sense to pool across them
+   \item Treat each country as an experiment
+ \end{itemize}
+ 
+ We don't focus on sex differences.
+ 
+ 
+ Age-specific life expectancies deterministic function of age-specific mortality rates
+ 
+ 
+
+
+\section*{Methods}
+  \label{sec:methods}
+
+% Put methods in here.  If you are going to subsection it, use
+% \verb|\subsection| commands.  Methods section should be less than
+% 800 words and if it is less than 200 words, it can be incorporated
+% into the main text.
+
+
+\bibliographystyle{unsrt}
+\bibliography{bmort}
+
+\end{document}
+

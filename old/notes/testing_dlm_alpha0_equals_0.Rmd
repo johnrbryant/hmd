@@ -1,0 +1,285 @@
+---
+title: "R Notebook"
+output:
+  html_notebook: default
+  html_document: default
+---
+
+
+```{r}
+library(tidyverse)
+library(demest)
+births <- demdata::iceland.births %>%
+    Counts(dimscales = c(year = "Intervals")) %>%
+    subarray(age > 15 & age < 45) %>%
+    collapseDimension(dimension = "age")
+expose <- demdata::iceland.popn %>%
+    Counts(dimscales = c(year = "Intervals", age = "Intervals")) %>%
+    subarray(age > 15 & age < 45) %>%
+    subarray(year < 2015) %>%
+    subarray(sex == "Females")
+filename.est <- "deleteme.est"
+filename.pred <- "deleteme.pred"
+set.seed(0)
+```
+
+
+# nBurnin, nSim = 1000
+
+```{r}
+nBurnin <- 1000
+nSim <- 1000
+nThin <- 5
+```
+
+
+## Model with level, trend, phi < 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with level, trend, phi = 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(damp = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+
+## Model with trend, phi < 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(level = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with trend, phi = 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(level = NULL, damp = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with level, phi < 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(trend = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with level, phi = 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(trend = NULL, damp = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+# nBurnin, nSim = 20000
+
+```{r}
+nBurnin <- 20000
+nSim <- 20000
+nThin <- 50
+```
+
+
+## Model with level, trend, phi < 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with level, trend, phi = 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(damp = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+
+## Model with trend, phi < 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(level = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with trend, phi = 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(level = NULL, damp = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with level, phi < 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(trend = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+
+
+## Model with level, phi = 1
+
+```{r}
+model <- Model(y ~ Poisson(mean ~ year),
+               year ~ DLM(trend = NULL, damp = NULL),
+               jump = 0.03)
+estimateModel(model,
+              y = births,
+              exposure = expose,
+              filename = filename.est,
+              nBurnin = nBurnin,
+              nSim = nSim,
+              nThin = nThin,
+              nChain = 4)
+fetchSummary(filename.est)
+round(collapseIterations(subarray(fetch(filename.est, c("model", "prior", "year")), year > 2012),
+                         prob = c(0.025, 0.5, 0.975)), 4)
+```
+

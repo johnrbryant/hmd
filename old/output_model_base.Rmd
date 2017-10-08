@@ -1,0 +1,132 @@
+---
+title: "Output from model_base"
+output:
+  html_notebook: default
+  pdf_document: default
+---
+
+```{r}
+library(demest)
+library(latticeExtra)
+filename <- "out/model_base.est"
+sample.countries <- c("New Zealand", "Spain", "Japan", "USA")
+sample.ages <- c("0", "20-24", "40-44", "60-64", "80-84", "100+")
+```
+
+
+## Model
+
+```{r}
+fetch(filename, "final")[[1]]@model@call
+```
+
+
+## Rates
+
+```{r, fig.width = 10, fig.height = 10}
+rates <- fetch(filename,
+               where = c("model", "likelihood", "rate"))
+dplot(~ year | series,
+      data = rates,
+      groups = age,
+      subarray = sex == "Female" & age %in% sample.ages,
+      par.settings = list(fontsize = list(text = 9)),
+      scales = list(y = list(log = TRUE)),
+      auto.key = TRUE)
+```
+
+
+## Age effect
+
+```{r}
+age <- fetch(filename,
+             where = c("model", "prior", "age"))
+dplot(~ age, data = age)
+```
+
+
+
+## Sex
+
+```{r, fig.width = 3, fig.height = 3}
+sex <- fetch(filename,
+             where = c("model", "prior", "sex"))
+dplot(~ sex, data = sex)
+```
+
+
+## Series
+
+```{r, fig.width = 3}
+series <- fetch(filename,
+               where = c("model", "prior", "series"))
+dplot(~ series, data = series, horizontal = TRUE)
+```
+
+
+## Year
+
+```{r}
+year <- fetch(filename,
+              where = c("model", "prior", "year"))
+dplot(~ year, data = year)
+```
+
+
+
+## Age:sex
+
+```{r, fig.width = 10, fig.height = 10}
+age.sex <- fetch(filename,
+                where = c("model", "prior", "age:sex"))
+dplot(~ age | sex,
+      data = age.sex,
+      par.settings = list(fontsize = list(text = 9)),
+      midpoints = "age")
+```
+
+
+
+## Sex:series
+
+```{r, fig.width = 10, fig.height = 10}
+sex.series <- fetch(filename,
+                    where = c("model", "prior", "sex:series"))
+dplot(~ series | sex,
+      data = sex.series,
+      horizontal = TRUE)
+```
+
+
+
+## Age:series:year
+
+```{r, fig.width = 10, fig.height = 6}
+age.series.year <- fetch(filename,
+                      where = c("model", "prior", "age:series:year"))
+p <- dplot(~ year | series * age,
+      data = age.series.year,
+      subarray = age %in% sample.ages & series %in% sample.countries,
+      par.settings = list(fontsize = list(text = 9)),
+      scales = list(y = list(relation = "free")),
+      midpoints = "year")
+useOuterStrips(p)
+```
+
+## Year - level
+
+```{r}
+year.level <- fetch(filename,
+                    where = c("model", "hyper", "year", "level"))
+dplot(~ year, data = year.level)
+```
+
+
+## Year - trend
+
+```{r}
+year.trend <- fetch(filename,
+                    where = c("model", "hyper", "year", "trend"))
+dplot(~ year, data = year.trend)
+```
+
