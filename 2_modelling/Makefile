@@ -11,7 +11,6 @@ N_BURNIN_COMP = 2000 # number of iterations for burnin
 N_SIM_COMP = 2000 # number of iterations for production
 N_CHAIN_COMP = 4 # number of independent chains
 N_THIN_COMP = 10 # thinning interval
-N_SUBSET_COMP = 100 # only use the first 'N_SUBSET_COMP' countries (useful for developing code)
 
 
 life_exp_comp = out/life_exp_comp_third.rds \
@@ -43,8 +42,7 @@ $(life_exp_comp) : src/life_exp_comp.R \
                    data/exposure.rds
 	Rscript $< --model $(subst .rds,,$(subst out/life_exp_comp_,,$@)) \
                      --seed $(SEED) --yr_est $(YR_EST_COMP) --len_pred $(LEN_PRED_COMP) --keep $(KEEP_COMP) \
-                     --n_burnin $(N_BURNIN_COMP) --n_sim $(N_SIM_COMP) --n_chain $(N_CHAIN_COMP) --n_thin $(N_THIN_COMP) \
-                     --n_subset $(N_SUBSET_COMP)
+                     --n_burnin $(N_BURNIN_COMP) --n_sim $(N_SIM_COMP) --n_chain $(N_CHAIN_COMP) --n_thin $(N_THIN_COMP)
 
 
 .PHONY: clean

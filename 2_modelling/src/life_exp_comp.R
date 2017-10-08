@@ -19,7 +19,6 @@ Options:
 --n_sim [default: 5]
 --n_chain [default: 4]
 --n_thin [default: 1]
---n_subset [default: 8]
 ' -> doc
 
 opts <- docopt(doc)
@@ -32,7 +31,6 @@ n_burnin <- opts$n_burnin
 n_sim <- opts$n_sim
 n_chain <- opts$n_chain
 n_thin <- opts$n_thin
-n_subset <- opts$n_subset
 
 
 ## Set up outfile
@@ -46,8 +44,6 @@ if (file.exists(out_file))
 
 deaths <- readRDS("data/deaths.rds")
 countries <- dimnames(deaths)$country
-if (n_subset < length(countries))
-    countries <- countries[seq_len(n_subset)] ## only use a subset of countries
 samples <- c("all", countries)
 for (samp in samples) {
     head <- "Rscript src/forecast_rates.R"

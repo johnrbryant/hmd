@@ -49,7 +49,7 @@ set.seed(seed)
 base <- sprintf("out/%s_%s_%s_%s", model, samp, yr_est, len_pred)
 filename_est <- sprintf("%s.est", base)
 filename_pred <- sprintf("%s.pred", base)
-outfile <- sub(" ", "_", sprintf("%s.log", base))
+outfile <- gsub(" ", "_", sprintf("%s.log", base))
 filename_rates <- sprintf("%s_rates.rds", base)
 
 
@@ -90,7 +90,7 @@ third_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                                           damp = NULL),
                    sex:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
                                           damp = NULL),
-                   jump = 0.07)
+                   jump = 0.06)
 
 third_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
                                     age:sex + age:year + sex:year),
@@ -104,7 +104,7 @@ third_indiv <- Model(y ~ Poisson(mean ~ age + sex + year +
                                    damp = NULL),
                     sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
                                    damp = NULL),
-                    jump = 0.07)
+                    jump = 0.055)
 
 
 ## 'fixsex' model: sex effects are constant over time
@@ -155,7 +155,7 @@ fixagesex_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                         sex:country ~ Zero(),
                         age:sex:country ~ DLM(trend = NULL,
                                               damp = NULL),               
-                        jump = 0.07)
+                        jump = 0.075)
 
 fixagesex_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
                                          age:sex),
@@ -204,7 +204,7 @@ inform_indiv <- Model(y ~ Poisson(mean ~ age + sex + year +
                                    damp = NULL),
                     sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.01)),
                                    damp = NULL),
-                    jump = 0.07)
+                    jump = 0.06)
 
 
 ## Get the appropriate model
