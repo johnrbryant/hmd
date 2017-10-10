@@ -118,7 +118,7 @@ fixsex_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                                 damp = NULL),
                      age:sex ~ Zero(),
                      age:country ~ Zero(),
-                     sex:country ~ Exch(),
+                     sex:country ~ Zero(),
                      age:year ~ Zero(),
                      sex:year ~ Zero(),
                      country:year ~ Zero(),
@@ -260,7 +260,7 @@ saveRDS(rates,
         file = filename_rates)
 
 
-## But, by default, delete model objects (which are large)
+## And, by default, keep model objects
 
 if (!keep) {
     file.remove(filename_est, filename_pred)

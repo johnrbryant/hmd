@@ -4,9 +4,9 @@ SEED = 0 # random seed
 
 ## Variables used in comparison of models
 
-KEEP_COMP = FALSE # whether to keep *.est and *.pred files
-YR_EST_COMP = 1985 # final year of data used
-LEN_PRED_COMP = 25 # length of prediction interval
+KEEP_COMP = TRUE # whether to keep *.est and *.pred files
+YR_EST_COMP = 2000 # final year of data used
+LEN_PRED_COMP = 10 # length of prediction interval
 N_BURNIN_COMP = 2000 # number of iterations for burnin
 N_SIM_COMP = 2000 # number of iterations for production
 N_CHAIN_COMP = 4 # number of independent chains

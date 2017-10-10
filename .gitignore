@@ -16,7 +16,7 @@ Rplots.pdf
 *.pred
 .Rproj.user
 *.html
-out/*.rds
+2_modelling/out/*
 *.est_1
 *.est_2
 *.est_3
