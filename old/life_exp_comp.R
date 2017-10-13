@@ -43,7 +43,7 @@ if (file.exists(out_file))
 ## Construct forecasts for 'all' and for each country
 
 deaths <- readRDS("data/deaths.rds")
-countries <- dimnames(deaths)$country
+countries <- dimnames(deaths)$country[c(1:2, 23:24)]
 samples <- c("all", countries)
 for (samp in samples) {
     head <- "Rscript src/forecast_rates.R"

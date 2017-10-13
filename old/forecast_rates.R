@@ -90,7 +90,7 @@ third_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                                           damp = NULL),
                    sex:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
                                           damp = NULL),
-                   jump = 0.06)
+                   jump = 0.1)
 
 third_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
                                     age:sex + age:year + sex:year),
@@ -104,47 +104,51 @@ third_indiv <- Model(y ~ Poisson(mean ~ age + sex + year +
                                    damp = NULL),
                     sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
                                    damp = NULL),
-                    jump = 0.055)
+                    jump = 0.1)
 
 
-## 'fixsex' model: sex effects are constant over time
+## 'thirddamp' model: all third-order effects, with damping
 
-fixsex_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
-                                     age:sex + age:country + sex:country + age:year + sex:year + country:year +
-                                     age:sex:country + age:country:year),
-                     age ~ DLM(damp = NULL,
-                               error = Error(robust = TRUE)),
-                     year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
-                                damp = NULL),
-                     age:sex ~ Zero(),
-                     age:country ~ Zero(),
-                     sex:country ~ Zero(),
-                     age:year ~ Zero(),
-                     sex:year ~ Zero(),
-                     country:year ~ Zero(),
-                     age:sex:country ~ DLM(trend = NULL,
-                                           damp = NULL),               
-                     age:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
-                                            damp = NULL),
-                     jump = 0.07)
+thirddamp_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
+                                   age:sex + age:country + sex:country + age:year + sex:year + country:year +
+                                   age:sex:country + age:country:year + sex:country:year),
+                   age ~ DLM(damp = NULL,
+                             error = Error(robust = TRUE)),
+                   year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                              damp = NULL),
+                   age:sex ~ Zero(),
+                   age:country ~ Zero(),
+                   sex:country ~ Zero(),
+                   age:year ~ Zero(),
+                   sex:year ~ Zero(),
+                   country:year ~ Zero(),
+                   age:sex:country ~ DLM(trend = NULL,
+                                         damp = NULL),
+                   age:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                          damp = Damp(min = 0.8, max = 1)),
+                   sex:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                          damp = Damp(min = 0.8, max = 1)),
+                   jump = 0.1)
 
-fixsex_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
-                                      age:sex + age:year),
-                      age ~ DLM(damp = NULL,
-                                error = Error(robust = TRUE)),
-                      year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
-                                 damp = NULL),
-                      age:sex ~ DLM(trend = NULL,
-                                    damp = NULL),
-                      age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
-                                     damp = NULL),
-                      jump = 0.07)
+thirddamp_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
+                                    age:sex + age:year + sex:year),
+                    age ~ DLM(damp = NULL,
+                              error = Error(robust = TRUE)),
+                    year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                               damp = NULL),
+                    age:sex ~ DLM(trend = NULL,
+                                  damp = NULL),               
+                    age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                   damp = Damp(min = 0.8, max = 1)),
+                    sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                   damp = Damp(min = 0.8, max = 1)),
+                    jump = 0.1)
 
 
 ## 'fixagesex' model: age and sex effects are constant over time
 
 fixagesex_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
-                                        age:sex + age:country + sex:country +
+                                        age:sex + age:country + sex:country + country:year +
                                         age:sex:country),
                         age ~ DLM(damp = NULL,
                                   error = Error(robust = TRUE)),
@@ -153,9 +157,11 @@ fixagesex_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                         age:sex ~ Zero(),
                         age:country ~ Zero(),
                         sex:country ~ Zero(),
+                        country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                           damp = NULL),
                         age:sex:country ~ DLM(trend = NULL,
                                               damp = NULL),               
-                        jump = 0.075)
+                        jump = 0.1)
 
 fixagesex_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
                                          age:sex),
@@ -165,46 +171,37 @@ fixagesex_indiv <- Model(y ~ Poisson(mean ~ age + sex + year +
                                     damp = NULL),
                          age:sex ~ DLM(trend = NULL,
                                        damp = NULL),
-                         jump = 0.07)
+                         jump = 0.1)
 
 
-## 'inform': the same as 'third', but with more informative priors
-## on variances for trend terms
+## 'fixagesexdamp' model: age and sex effects are constant over time, with damping of country:year effect
 
-inform_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
-                                   age:sex + age:country + sex:country + age:year + sex:year + country:year +
-                                   age:sex:country + age:country:year + sex:country:year),
-                   age ~ DLM(damp = NULL,
-                             error = Error(robust = TRUE)),
-                   year ~ DLM(trend = Trend(scale = HalfT(scale = 0.02)),
-                              damp = NULL),
-                   age:sex ~ Zero(),
-                   age:country ~ Zero(),
-                   sex:country ~ Zero(),
-                   age:year ~ Zero(),
-                   sex:year ~ Zero(),
-                   country:year ~ Zero(),
-                   age:sex:country ~ DLM(trend = NULL,
-                                         damp = NULL),               
-                   age:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.01)),
-                                          damp = NULL),
-                   sex:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.01)),
-                                          damp = NULL),
-                   jump = 0.07)
-
-inform_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
-                                    age:sex + age:year + sex:year),
-                    age ~ DLM(damp = NULL,
-                              error = Error(robust = TRUE)),
-                    year ~ DLM(trend = Trend(scale = HalfT(scale = 0.02)),
-                               damp = NULL),
-                    age:sex ~ DLM(trend = NULL,
-                                  damp = NULL),               
-                    age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.01)),
+fixagesexdamp_pool <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
+                                        age:sex + age:country + sex:country + country:year +
+                                        age:sex:country),
+                        age ~ DLM(damp = NULL,
+                                  error = Error(robust = TRUE)),
+                        year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
                                    damp = NULL),
-                    sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.01)),
-                                   damp = NULL),
-                    jump = 0.06)
+                        age:sex ~ Zero(),
+                        age:country ~ Zero(),
+                        sex:country ~ Zero(),
+                        country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                           damp = Damp(min = 0.8, max = 1)),
+                        age:sex:country ~ DLM(trend = NULL,
+                                              damp = NULL),               
+                        jump = 0.1)
+
+fixagesexdamp_indiv <- Model(y ~ Poisson(mean ~ age + sex + year + 
+                                         age:sex),
+                         age ~ DLM(damp = NULL,
+                                   error = Error(robust = TRUE)),
+                         year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                                    damp = NULL),
+                         age:sex ~ DLM(trend = NULL,
+                                       damp = NULL),
+                         jump = 0.1)
+
 
 
 ## Get the appropriate model
@@ -238,6 +235,10 @@ estimateModel(spec,
 
 s <- fetchSummary(filename_est)
 print(s)
+
+
+
+
 
 
 ## Prediction

@@ -1,5 +1,5 @@
 
-FIRST_YEAR = 1960
+FIRST_YEAR = 1950
 
 .PHONY: all
 data : out/life_exp.rds \
