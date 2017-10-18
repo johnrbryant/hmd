@@ -20,3 +20,4 @@ Rplots.pdf
 *.est_2
 *.est_3
 *.est_4
+2_modelling/out/*.rds
