@@ -1,4 +1,3 @@
-
 ## Load R packages. Note that 'Rscript' does not automatically load
 ## the 'methods' package, so we have to do it ourselves.
 
@@ -19,13 +18,13 @@ one_model.R [options]
 Options:
 --model [default: pool_nodamp]
 --seed [default: 0]
---yr_est [default: 1995]
---len_pred [default: 20]
+--yr_est [default: 1990]
+--len_pred [default: 25]
 --alpha [default: 0.2]
---n_burnin [default: 5]
---n_sim [default: 5]
+--n_burnin [default: 150000]
+--n_sim [default: 150000]
 --n_chain [default: 4]
---n_thin [default: 1]
+--n_thin [default: 300]
 ' -> doc
 
 opts <- docopt(doc)
@@ -38,11 +37,6 @@ n_burnin <- as.integer(opts$n_burnin)
 n_sim <- as.integer(opts$n_sim)
 n_chain <- as.integer(opts$n_chain)
 n_thin <- as.integer(opts$n_thin)
-
-
-## Set random seed, using seed passed in via 'docopt'
-
-set.seed(seed)
 
 
 ## Set up filenames, based on model, samp, yr_est, and len_pred
@@ -66,7 +60,6 @@ exposure_pred <- exposure %>% subarray(year > yr_est)
 
 
 ## model specifications
-
 pool_nodamp <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
                                      age:sex + age:country + sex:country + age:year + sex:year + country:year +
                                      age:sex:country + age:country:year + sex:country:year),
@@ -87,20 +80,6 @@ pool_nodamp <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                      sex:country:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
                                             damp = NULL),
                      jump = 0.02)
-
-indiv_nodamp <- Model(y ~ Poisson(mean ~ age + sex + year + 
-                                      age:sex + age:year + sex:year),
-                      age ~ DLM(damp = NULL,
-                                error = Error(robust = TRUE)),
-                      year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
-                                 damp = NULL),
-                      age:sex ~ DLM(trend = NULL,
-                                    damp = NULL),               
-                      age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
-                                     damp = NULL),
-                      sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
-                                     damp = NULL),
-                      jump = 0.02)
 
 pool_damp <- Model(y ~ Poisson(mean ~ age + sex + country + year + 
                                    age:sex + age:country + sex:country + age:year + sex:year + country:year +
@@ -123,28 +102,7 @@ pool_damp <- Model(y ~ Poisson(mean ~ age + sex + country + year +
                                           damp = Damp(min = 0.8, max = 1)),
                    jump = 0.02)
 
-indiv_damp <- Model(y ~ Poisson(mean ~ age + sex + year + 
-                                    age:sex + age:year + sex:year),
-                    age ~ DLM(damp = NULL,
-                              error = Error(robust = TRUE)),
-                    year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
-                               damp = NULL),
-                    age:sex ~ DLM(trend = NULL,
-                                  damp = NULL),               
-                    age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
-                                   damp = Damp(min = 0.8, max = 1)),
-                    sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
-                                   damp = Damp(min = 0.8, max = 1)),
-                    jump = 0.02)
-
 ## Get the appropriate model
-
-spec <- tryCatch(get(model),
-                 error = function(e) e)
-if (is(spec, "error"))
-    stop(gettextf("invalid model name : %s",
-                  spec$message))
-
 is_indiv <- grepl("indiv", model)
 countries <- dimnames(deaths)$country
 n_countries <- length(countries)
@@ -154,9 +112,76 @@ n_countries <- length(countries)
 
 if (is_indiv) {
     for (COUNTRY in countries) {
+        if (COUNTRY=="Iceland") {
+           indiv_nodamp <- Model(y ~ Poisson(mean ~ age + sex + year + 
+                                      age:sex + age:year + sex:year),
+                                 age ~ DLM(damp = NULL,
+                                      error = Error(robust = TRUE)),
+                                 year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                                      damp = NULL),
+                                 age:sex ~ DLM(trend = NULL,
+                                      damp = NULL),               
+                                 age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                      damp = NULL),
+                                 sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                      damp = NULL),
+                                 jump = 0.02)
+        } else {
+           indiv_nodamp <- Model(y ~ Poisson(mean ~ age + sex + year + 
+                                      age:sex + age:year + sex:year),
+                                 age ~ DLM(damp = NULL,
+                                      error = Error(robust = TRUE)),
+                                 year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                                      damp = NULL),
+                                 age:sex ~ DLM(trend = NULL,
+                                      damp = NULL),               
+                                 age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                      damp = NULL),
+                                 sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                      damp = NULL),
+                                 jump = 0.03)
+        }
+        if (country=="Luxembourg") {
+          indiv_damp <- Model(y ~ Poisson(mean ~ age + sex + year + 
+                                                 age:sex + age:year + sex:year),
+                              age ~ DLM(damp = NULL,
+                                        error = Error(robust = TRUE)),
+                              year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                                         damp = NULL),
+                              age:sex ~ DLM(trend = NULL,
+                                            damp = NULL),               
+                              age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                             damp = Damp(min = 0.8, max = 1)),
+                              sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                             damp = Damp(min = 0.8, max = 1)),
+                              jump = 0.01)
+        } else {
+          indiv_damp <- Model(y ~ Poisson(mean ~ age + sex + year + 
+                                                 age:sex + age:year + sex:year),
+                              age ~ DLM(damp = NULL,
+                                        error = Error(robust = TRUE)),
+                              year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                                         damp = NULL),
+                              age:sex ~ DLM(trend = NULL,
+                                            damp = NULL),               
+                              age:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                             damp = Damp(min = 0.8, max = 1)),
+                              sex:year ~ DLM(trend = Trend(scale = HalfT(scale = 0.05)),
+                                             damp = Damp(min = 0.8, max = 1)),
+                              jump = 0.02)
+        }
+ 
+        spec <- tryCatch(get(model),
+                         error = function(e) e)
+        if (is(spec, "error"))
+          stop(gettextf("invalid model name : %s",
+                         spec$message))
+
+        set.seed(seed)
+
         filename_est <- sprintf("%s_%s.est", base, COUNTRY)
         filename_pred <- sprintf("%s_%s.pred", base, COUNTRY)
-        outfile <- gsub(" ", "_", sprintf("%s_%s.log", base, COUNTRY))
+        outfile <- sprintf("%s_%s.log", base, COUNTRY)
         y <- subarray(deaths_est, country == COUNTRY)
         expose <- subarray(exposure_est, country == COUNTRY)
         estimateModel(spec,
@@ -170,14 +195,23 @@ if (is_indiv) {
                       outfile = outfile)
         s <- fetchSummary(filename_est)
         print(s)
+
+        set.seed(seed)
         predictModel(filenameEst = filename_est,
                      filenamePred = filename_pred,
                      n = len_pred)
     }
 } else {
+    spec <- tryCatch(get(model),
+                     error = function(e) e)
+    if (is(spec, "error"))
+       stop(gettextf("invalid model name : %s",
+                      spec$message))
+    set.seed(seed)
+
     filename_est <- sprintf("%s.est", base)
     filename_pred <- sprintf("%s.pred", base)
-    outfile <- gsub(" ", "_", sprintf("%s.log", base))
+    outfile <- sprintf("%s.log", base)
     estimateModel(spec,
                   y = deaths_est,
                   exposure = exposure_est,
@@ -189,6 +223,8 @@ if (is_indiv) {
                   outfile = outfile)
     s <- fetchSummary(filename_est)
     print(s)
+
+    set.seed(seed)
     predictModel(filenameEst = filename_est,
                  filenamePred = filename_pred,
                  n = len_pred)    
@@ -196,8 +232,6 @@ if (is_indiv) {
 
 
 ## Make predicted life expectancies - use age 90+ for 3 smallest countries and 100+ for rest
-
-
 if (is_indiv) {
     rates_super_pred <- vector(mode = "list", length = n_countries)
     for (i in seq_len(n_countries)) {
@@ -312,7 +346,6 @@ if (is_indiv) {
 
 
 ## Forecasts
-
 graphics.off()
 pdf(file = filename_forecasts,
     paper = "a4r",
@@ -343,7 +376,6 @@ dev.off()
 
 
 ## MSE
-
 graphics.off()
 pdf(file = filename_mse,
     paper = "a4r",
