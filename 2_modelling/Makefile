@@ -2,14 +2,35 @@
 
 SEED = 0 # random seed
 ALPHA = 0.2 # governs size of credible interval
-N_BURNIN = 500 # number of iterations for burnin
-N_SIM = 500 # number of iterations for production
+N_BURNIN = 2500 # number of iterations for burnin
+N_SIM = 2500 # number of iterations for production
 N_CHAIN = 4 # number of independent chains
-N_THIN = 5 # thinning interval
+N_THIN = 20 # thinning interval
 
 .PHONY: all
-all: out/life_exp_1980_25.rds \
+all: out/pool_damp_2010_25_life_exp.rds \
+     out/pool_damp_2015_20_life_exp.rds \
+     out/life_exp_1980_25.rds \
      out/life_exp_1990_25.rds
+
+
+## slow-down forecasts
+
+out/pool_damp_2010_25_life_exp.rds : src/one_model.R \
+                                     data/deaths.rds \
+                                     data/exposure.rds \
+                                     data/life_exp.rds
+	Rscript $< --model pool_damp \
+                     --seed $(SEED) --yr_est 2010 --len_pred 25 --alpha $(ALPHA) \
+                     --n_burnin $(N_BURNIN) --n_sim $(N_SIM) --n_chain $(N_CHAIN) --n_thin $(N_THIN)
+
+out/pool_damp_2015_20_life_exp.rds : src/one_model.R \
+                                     data/deaths.rds \
+                                     data/exposure.rds \
+                                     data/life_exp.rds
+	Rscript $< --model pool_damp \
+                     --seed $(SEED) --yr_est 2015 --len_pred 20 --alpha $(ALPHA) \
+                     --n_burnin $(N_BURNIN) --n_sim $(N_SIM) --n_chain $(N_CHAIN) --n_thin $(N_THIN)
 
 
 ## consolidated
