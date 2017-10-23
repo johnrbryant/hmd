@@ -12,9 +12,6 @@ life_exp_obs <- readRDS("data/life_exp.rds")
 life_exp_pred_1980 <- readRDS("data/life_exp_1980_25.rds")
 life_exp_pred_1990 <- readRDS("data/life_exp_1990_25.rds")
 
-life_exp_pred_1980[is.infinite(life_exp_pred_1980) | is.na(life_exp_pred_1980)] <- 80 ## TEMPORARY HACK!!!!
-life_exp_pred_1990[is.infinite(life_exp_pred_1990) | is.na(life_exp_pred_1990)] <- 80 ## TEMPORARY HACK!!!!
-
 countries <- dimnames(life_exp_obs)$country
 sexes <- c("Female", "Male")
 ages <- c(0, 65)
@@ -31,7 +28,7 @@ for (COUNTRY in countries) {
             AGE <- ages[i.age]
             for (i.yr in seq_along(years)) {
                 YEAR <- years[i.yr]
-                main <- sprintf("%s, age %s, %ss, %s - HACK!!",
+                main <- sprintf("%s, age %s, %ss, %s",
                                 COUNTRY, AGE, SEX, YEAR)
                 xlim <- c(1950, 2015)
                 ylim <- if (AGE == "0") c(60, 110) else c(5, 30)

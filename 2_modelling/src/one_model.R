@@ -16,15 +16,15 @@ Usage:
 one_model.R [options]
 
 Options:
---model [default: pool_nodamp]
+--model [default: pool_damp]
 --seed [default: 0]
 --yr_est [default: 2015]
---len_pred [default: 25]
+--len_pred [default: 20]
 --alpha [default: 0.2]
---n_burnin [default: 150000]
---n_sim [default: 150000]
+--n_burnin [default: 10]
+--n_sim [default: 10]
 --n_chain [default: 4]
---n_thin [default: 300]
+--n_thin [default: 1]
 ' -> doc
 
 opts <- docopt(doc)
@@ -55,8 +55,11 @@ exposure <- readRDS("data/exposure.rds")
 life_exp <- readRDS("data/life_exp.rds")
 deaths_est <- deaths %>% subarray(year <= yr_est)
 exposure_est <- exposure %>% subarray(year <= yr_est)
-deaths_pred <- deaths %>% subarray(year > yr_est)
-exposure_pred <- exposure %>% subarray(year > yr_est)
+using_heldback_data <- max(as.integer(dimnames(deaths)$year)) >= (yr_est + len_pred)
+if (using_heldback_data) {
+    deaths_pred <- deaths %>% subarray(year > yr_est)
+    exposure_pred <- exposure %>% subarray(year > yr_est)
+}
 
 
 ## model specifications
@@ -109,6 +112,7 @@ n_countries <- length(countries)
 
 
 ## Estimation and prediction
+
 
 if (is_indiv) {
     for (COUNTRY in countries) {
@@ -231,7 +235,11 @@ if (is_indiv) {
 }
 
 
-## Make predicted life expectancies - use age 90+ for 3 smallest countries and 100+ for rest
+## Make predicted life expectancies
+## Use age 90+ for 3 smallest countries and 100+ for rest
+## If using held-back data, calculate finite-population
+## quantities; otherwise calculate super-population quantities.
+
 if (is_indiv) {
     rates_super_pred <- vector(mode = "list", length = n_countries)
     for (i in seq_len(n_countries)) {
@@ -249,6 +257,7 @@ if (is_indiv) {
                               where = c("model", "likelihood", "rate"))
 }
 
+if (using_heldback_data) {
 expected_deaths_pred <- rates_super_pred * exposure_pred
 deaths_pred <- suppressWarnings(rpois(n = length(expected_deaths_pred),
                                       lambda = expected_deaths_pred)) %>% # warns about NAs
@@ -286,6 +295,13 @@ life_exp_pred_big <- life_exp_pred_big %>%
 life_exp_pred <- dbind(life_exp_pred_small,
                        life_exp_pred_big,
                        along = "country")
+} else {
+    life_exp_pred <- rates_super_pred %>%
+        LifeTable() %>%
+        lifeTableFun(fun = "ex") %>%
+        subarray(age %in% c("0", "65"))
+}
+    
 
 saveRDS(life_exp_pred,
         file = filename_life_exp)
