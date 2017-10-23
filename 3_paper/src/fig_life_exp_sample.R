@@ -1,18 +1,18 @@
 
 library(methods)
 library(dembase)
+library(dplyr)
 library(latticeExtra)
 
-life_exp <- readRDS("out/life_exp.rds")
+life_exp <- readRDS("data/life_exp.rds")
 palette <- readRDS("out/palette.rds")
 sample_countries <- readRDS("out/sample_countries.rds")
 
-data <- subarray(life_exp,
-                 subarray = country %in% sample_countries & age == "0" & sex == "Male")
-data <- as.data.frame(data,
-                      direction = "long",
-                      midpoints = "year")
-p <- xyplot(count ~ year | country,
+data <- life_exp %>%
+    subarray(country %in% sample_countries & age == "0" & sex == "Male") %>%
+    as.data.frame(direction = "long", midpoints = "year")
+
+p <- xyplot(value ~ year | country,
             data = data,
             xlab = "",
             ylab = "",

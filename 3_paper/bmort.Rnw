@@ -28,8 +28,8 @@
 
 <<setup, echo = FALSE, message = FALSE>>=
 library(demest)
-deaths <- readRDS("out/deaths.rds")
-exposure <- readRDS("out/exposure.rds")
+deaths <- readRDS("data/deaths.rds")
+exposure <- readRDS("data/exposure.rds")
 @
 
 
@@ -58,20 +58,6 @@ exposure <- readRDS("out/exposure.rds")
 % be fewer than 300 words (800 words or fewer in total for the whole
 % paper).
 
-Importance of understanding mortality change
-\begin{itemize}
-  \item Basic indicator of social wellbeing; success of health sector etc
-  \item Forecasting - pensions, life insurance, population forecasts, aged care, health care
-\end{itemize}
-
-Expectations about mortality decline
-\begin{itemize}
-    \item Lee and Carter, Oeppen and Vaupel etc, pointing out that tapering off in mortality decline not appearing. Governments, demographers systematically understating future declines. 
-    \item Has become the new orthodoxy.
-    \item Actuaries pointing out that decline slowing - or reversed
-    \item Case and Deaton in US
- \end{itemize}
-
 
 \begin{figure}
 \begin{subfigure}{\textwidth}
@@ -87,6 +73,45 @@ Expectations about mortality decline
 \caption{Life expectancies and age-specific mortality rates, for males, for 5 selected countries.  The life expectancies come from the Human Mortality Database (HMD) \citep{hmd}. The mortality rates were calculated by us from deaths and exposure data from the HMD.  Life expectancies and mortality rates for females and males for our full sample of 22 countries are shown in Figure XXX of the Extended Data.}
   \label{fig:sample_life_mort}
 \end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics{out/fig_performance_combined}
+  \caption{Bla bla}
+  \label{fig:performance_combined}
+\end{figure}
+
+
+ 
+
+
+\section*{Methods}
+  \label{sec:methods}
+
+% Put methods in here.  If you are going to subsection it, use
+% \verb|\subsection| commands.  Methods section should be less than
+% 800 words and if it is less than 200 words, it can be incorporated
+% into the main text.
+  
+ 
+
+\section{Old notes}
+  
+        
+Importance of understanding mortality change
+\begin{itemize}
+  \item Basic indicator of social wellbeing; success of health sector etc
+  \item Forecasting - pensions, life insurance, population forecasts, aged care, health care
+\end{itemize}
+
+Expectations about mortality decline
+\begin{itemize}
+    \item Lee and Carter, Oeppen and Vaupel etc, pointing out that tapering off in mortality decline not appearing. Governments, demographers systematically understating future declines. 
+    \item Has become the new orthodoxy.
+    \item Actuaries pointing out that decline slowing - or reversed
+    \item Case and Deaton in US
+ \end{itemize}
+
 
 Mortality varies:
 \begin{itemize}
@@ -112,18 +137,8 @@ Mortality varies:
  
  Age-specific life expectancies deterministic function of age-specific mortality rates
  
- 
-
-
-\section*{Methods}
-  \label{sec:methods}
-
-% Put methods in here.  If you are going to subsection it, use
-% \verb|\subsection| commands.  Methods section should be less than
-% 800 words and if it is less than 200 words, it can be incorporated
-% into the main text.
-
-
+  
+  
 \bibliographystyle{unsrt}
 \bibliography{bmort}
 

@@ -3,8 +3,8 @@ library(methods)
 library(dembase)
 library(latticeExtra)
 
-deaths <- readRDS("out/deaths.rds")
-exposure <- readRDS("out/exposure.rds")
+deaths <- readRDS("data/deaths.rds")
+exposure <- readRDS("data/exposure.rds")
 palette <- readRDS("out/palette.rds")
 sample_countries <- readRDS("out/sample_countries.rds")
 

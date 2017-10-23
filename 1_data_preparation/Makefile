@@ -15,6 +15,9 @@ out/life_exp.rds : src/life_exp.R \
                    out/deaths.rds \
                    out/exposure.rds 
 	Rscript $<
+	cp out/life_exp.rds ../2_modelling/data/life_exp.rds
+	cp out/life_exp.rds ../3_paper/data/life_exp.rds
+
 
 ## Counts object with data for series where Included is "Yes" in 'sample_description'.
 ## Non-integer values rounded to integer.
@@ -23,6 +26,9 @@ out/deaths.rds : src/deaths.R \
                  out/deaths_raw.rds \
                  out/labels_popn_size.rds
 	Rscript $<  --first_year $(FIRST_YEAR)
+	cp out/deaths.rds ../2_modelling/data/deaths.rds
+	cp out/deaths.rds ../3_paper/data/deaths.rds
+
 
 ## Counts object with data for series where Included is "Yes" in 'sample_description'.
 out/exposure.rds : src/exposure.R \
@@ -30,6 +36,9 @@ out/exposure.rds : src/exposure.R \
                    out/exposure_raw.rds \
                    out/labels_popn_size.rds
 	Rscript $<  --first_year $(FIRST_YEAR)
+	cp out/exposure.rds ../2_modelling/data/exposure.rds
+	cp out/exposure.rds ../3_paper/data/exposure.rds
+
 
 out/labels_popn_size.rds : src/labels_popn_size.R \
                            out/exposure_raw.rds
