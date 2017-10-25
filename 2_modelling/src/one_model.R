@@ -121,7 +121,7 @@ if (is_indiv) {
                                       age:sex + age:year + sex:year),
                                  age ~ DLM(damp = NULL,
                                       error = Error(robust = TRUE)),
-                                 year ~ DLM(trend = Trend(scale = HalfT(scale = 0.1)),
+                                 year ~ DLM(trend = Trend(scale = HalfT(scale = 0.02)),
                                       damp = NULL),
                                  age:sex ~ DLM(trend = NULL,
                                       damp = NULL),               
@@ -145,7 +145,7 @@ if (is_indiv) {
                                       damp = NULL),
                                  jump = 0.03)
         }
-        if (country=="Luxembourg") {
+        if (COUNTRY=="Luxembourg") {
           indiv_damp <- Model(y ~ Poisson(mean ~ age + sex + year + 
                                                  age:sex + age:year + sex:year),
                               age ~ DLM(damp = NULL,
@@ -258,43 +258,43 @@ if (is_indiv) {
 }
 
 if (using_heldback_data) {
-expected_deaths_pred <- rates_super_pred * exposure_pred
-deaths_pred <- suppressWarnings(rpois(n = length(expected_deaths_pred),
-                                      lambda = expected_deaths_pred)) %>% # warns about NAs
-    array(.,
-          dim = dim(expected_deaths_pred),
-          dimnames = dimnames(expected_deaths_pred)) %>%
-    Counts(dimscales = c(year = "Intervals"))
-deaths_pred_small <- deaths_pred %>%
-    slab(dimension = "country", elements = 1:3) %>%
-    collapseIntervals(dimension = "age", old = c("90-94", "95-99", "100+"))
-deaths_pred_big <- deaths_pred %>%
-    slab(dimension = "country", elements = 4:n_countries)
-exposure_pred_small <- exposure_pred %>%
-    slab(dimension = "country", elements = 1:3)
-exposure_pred_big <- exposure_pred %>%
-    slab(dimension = "country", elements = 4:n_countries)
-rates_finite_pred_small <- (deaths_pred_small / exposure_pred_small)
-rates_finite_pred_big <- (deaths_pred_big / exposure_pred_big)
-is_missing_small <- is.na(rates_finite_pred_small) # missing for entire years; LifeTable can't handle
-is_missing_big <- is.na(rates_finite_pred_big)
-rates_finite_pred_small[is_missing_small] <- 999
-rates_finite_pred_big[is_missing_big] <- 999
-life_exp_pred_small <- rates_finite_pred_small %>%
-    LifeTable() %>%
-    lifeTableFun(fun = "ex")
-life_exp_pred_big <- rates_finite_pred_big %>%
-    LifeTable() %>%
-    lifeTableFun(fun = "ex")
-life_exp_pred_small[is_missing_small] <- NA
-life_exp_pred_big[is_missing_big] <- NA
-life_exp_pred_small <- life_exp_pred_small %>%
-    subarray(age %in% c("0", "65"))
-life_exp_pred_big <- life_exp_pred_big %>%
-    subarray(age %in% c("0", "65"))
-life_exp_pred <- dbind(life_exp_pred_small,
-                       life_exp_pred_big,
-                       along = "country")
+    expected_deaths_pred <- rates_super_pred * exposure_pred
+    deaths_pred <- suppressWarnings(rpois(n = length(expected_deaths_pred),
+                                          lambda = expected_deaths_pred)) %>% # warns about NAs
+        array(.,
+              dim = dim(expected_deaths_pred),
+              dimnames = dimnames(expected_deaths_pred)) %>%
+        Counts(dimscales = c(year = "Intervals"))
+    deaths_pred_small <- deaths_pred %>%
+        slab(dimension = "country", elements = 1:3) %>%
+        collapseIntervals(dimension = "age", old = c("90-94", "95-99", "100+"))
+    deaths_pred_big <- deaths_pred %>%
+        slab(dimension = "country", elements = 4:n_countries)
+    exposure_pred_small <- exposure_pred %>%
+        slab(dimension = "country", elements = 1:3)
+    exposure_pred_big <- exposure_pred %>%
+        slab(dimension = "country", elements = 4:n_countries)
+    rates_finite_pred_small <- (deaths_pred_small / exposure_pred_small)
+    rates_finite_pred_big <- (deaths_pred_big / exposure_pred_big)
+    is_missing_small <- is.na(rates_finite_pred_small) # missing for entire years; LifeTable can't handle
+    is_missing_big <- is.na(rates_finite_pred_big)
+    rates_finite_pred_small[is_missing_small] <- 999
+    rates_finite_pred_big[is_missing_big] <- 999
+    life_exp_pred_small <- rates_finite_pred_small %>%
+        LifeTable() %>%
+        lifeTableFun(fun = "ex")
+    life_exp_pred_big <- rates_finite_pred_big %>%
+        LifeTable() %>%
+        lifeTableFun(fun = "ex")
+    life_exp_pred_small[is_missing_small] <- NA
+    life_exp_pred_big[is_missing_big] <- NA
+    life_exp_pred_small <- life_exp_pred_small %>%
+        subarray(age %in% c("0", "65"))
+    life_exp_pred_big <- life_exp_pred_big %>%
+        subarray(age %in% c("0", "65"))
+    life_exp_pred <- dbind(life_exp_pred_small,
+                           life_exp_pred_big,
+                           along = "country")
 } else {
     life_exp_pred <- rates_super_pred %>%
         LifeTable() %>%

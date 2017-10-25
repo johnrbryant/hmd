@@ -23,3 +23,4 @@ Rplots.pdf
 2_modelling/out/*.rds
 2_modelling/out/*.pdf
 2_modelling/negative_vals/*
+3_paper/data/*.rds
