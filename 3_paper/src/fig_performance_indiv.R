@@ -27,35 +27,14 @@ score90 <- life_exp_pred_1990 %>%
     as.data.frame(direction = "long") %>%
     mutate(launch = 1990)
 rmse <- rbind(rmse80, rmse90) %>%
-    mutate(model = paste(pooling, damping),
-           model = factor(model,
-                          levels = c("Individual Not damped",
-                                     "Pooled Not damped",
-                                     "Individual Damped",
-                                     "Pooled Damped"),
-                          labels = c("Individual, not damped",
-                                     "Pooled, not damped",
-                                     "Individual, damped",
-                                     "Pooled, damped")),
-           sex_age = paste(sex, age),
+    mutate(sex_age = paste(sex, age),
            year = as.integer(levels(year))[year])
 score <- rbind(score80, score90) %>%
-    mutate(model = paste(pooling, damping),
-           model = factor(model,
-                          levels = c("Individual Not damped",
-                                     "Pooled Not damped",
-                                     "Individual Damped",
-                                     "Pooled Damped"),
-                          labels = c("Individual, not damped",
-                                     "Pooled, not damped",
-                                     "Individual, damped",
-                                     "Pooled, damped")),
-           sex_age = paste(sex, age),
+    mutate(sex_age = paste(sex, age),
            year = as.integer(levels(year))[year])
 
-col <- rep(c(palette$blue, palette$green), each = 2)
-lty <- rep(c("dashed", "solid"), times = 2)
-countries <- dimnames(life_exp_obs)$country[1:4]
+col <- c(palette$blue, palette$green)
+countries <- dimnames(life_exp_obs)$country
 
 graphics.off()
 pdf(file = "out/fig_performance_indiv.pdf",
@@ -66,26 +45,22 @@ for (COUNTRY in countries) {
                      type = "l",
                      subset = country == COUNTRY,
                      main = paste("RMSE", COUNTRY, sep = " - "),
-                     groups = model,
+                     groups = pooling,
                      col = col,
-                     lty = lty,
                      lwd = 1.5,
-                     key = list(text = list(levels(score$model)),
-                                lines = list(col = col, lty = lty, lwd = 1.5),
-                                columns = 2))
+                     key = list(text = list(levels(score$pooling)),
+                                lines = list(col = col, lwd = 1.5)))
     p_score <- xyplot(value ~ year | sex_age + factor(launch),
                       data = score,
                       type = "l",
                       subset = country == COUNTRY,
                       main = paste("Interval Score", COUNTRY, sep = " - "),
-                      groups = model,
+                      groups = pooling,
                       col = col,
-                      lty = lty,
                       lwd = 1.5,
                       par.settings = list(fontsize = list(text = 7)),
-                      key = list(text = list(levels(score$model)),
-                                 lines = list(col = col, lty = lty, lwd = 1.5),
-                                 columns = 2))
+                      key = list(text = list(levels(score$pooling)),
+                                 lines = list(col = col, lwd = 1.5)))
     p_rmse <- useOuterStrips(p_rmse)
     p_score <- useOuterStrips(p_score)
     m <- arrangeGrob(p_rmse, p_score, nrow = 2)

@@ -2,7 +2,8 @@
 .PHONY: all
 all : bmort.pdf \
       out/fig_forecasts_heldback.pdf \
-      out/fig_performance_indiv.pdf
+      out/fig_performance_indiv.pdf \
+      out/fig_coverage.pdf
 
 
 ## Paper
@@ -20,6 +21,14 @@ bmort.pdf : bmort.tex \
 
 bmort.tex : bmort.Rnw
 	Rscript -e "knitr::knit('$<')"
+
+
+out/fig_coverage.pdf : src/fig_coverage.R \
+                       data/life_exp.rds \
+                       data/life_exp_1980_25.rds \
+                       data/life_exp_1990_25.rds \
+                       out/palette.rds
+	Rscript $<
 
 
 out/fig_performance_combined.pdf : src/fig_performance_combined.R \

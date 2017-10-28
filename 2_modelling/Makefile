@@ -2,10 +2,10 @@
 
 SEED = 0 # random seed
 ALPHA = 0.2 # governs size of credible interval
-N_BURNIN = 1000 # number of iterations for burnin
-N_SIM = 1000 # number of iterations for production
+N_BURNIN = 2500 # number of iterations for burnin
+N_SIM = 2500 # number of iterations for production
 N_CHAIN = 4 # number of independent chains
-N_THIN = 10 # thinning interval
+N_THIN = 20 # thinning interval
 
 .PHONY: all
 all: out/pool_2010_25_life_exp.rds \
